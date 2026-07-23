@@ -6,7 +6,7 @@ Covers:
 - **Login flow** — desktop web (Chrome / Firefox / Edge)
 - **Purchase flow** — stop before payment confirmation
 - **WebGL game** — canvas load & interaction (bonus)
-- **Mobile web** — Android Chrome via Appium (Samsung Galaxy A55, Android 16)
+- **Mobile web** — Android Chrome via Appium
 
 ---
 
@@ -94,19 +94,16 @@ Edit `src/test/resources/stumbleguys.properties`:
 
 ```properties
 # Main site
-url       = https://www.stumbleguys.com/
-store.url = https://www.stumbleguys.com/shop
-game.url  = https://www.stumbleguys.com/play
+url = https://www.stumbleguys.com/
 
 # Browser: chrome | firefox | edge
 browser  = chrome
 headless = false
 
-# Android (mobile tests only — update to match your device)
-appium.serverUrl        = http://127.0.0.1:4723
-android.deviceName      = SM-A556E
-android.udid            = R5CX80VG0AW   # run: adb devices
-android.platformVersion = 16
+# Android (mobile tests only)
+# Device is auto-detected via adb — no manual config needed.
+# Just connect a device, start Appium, and run.
+appium.serverUrl = http://127.0.0.1:4723
 ```
 
 For mobile, install the ChromeDriver matching your device's Chrome version and point to it:
@@ -168,7 +165,7 @@ allure serve target/allure-results
 | `testGameLoadingScreenAppearsAndCompletes` | Loading screen shows and game finishes loading |
 | `testGameCanvasIsInteractable` | User can click inside the game canvas |
 
-### Mobile — Android Chrome (Samsung Galaxy A55, Android 16)
+### Mobile — Android Chrome
 | Test | Description |
 |---|---|
 | `testMobileLandingPageLoads` | Landing page loads on Android Chrome |
@@ -211,7 +208,7 @@ Update this path to match the chromedriver you have installed.
 
 ## Important Notes
 
-- **No purchase is completed.** The purchase flow navigates to checkout and asserts state without clicking Confirm/Pay.
+- **No purchase is completed.** The purchase flow navigates to the store and verifies that a login gate appears — no checkout or payment page is reached.
 - **Social login** (Google/Apple/Facebook) requires real OAuth credentials. Tests verify the modal/popup opens.
 - **WebGL tests** require Chrome or Firefox. Safari is not tested.
 - **Mobile tests** require a physical Android device or AVD with Chrome installed.

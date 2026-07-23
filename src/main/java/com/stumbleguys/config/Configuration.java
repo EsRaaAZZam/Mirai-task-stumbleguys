@@ -25,22 +25,21 @@ public interface Configuration extends Config {
     @Key("url")
     String url();
 
-    @Key("store.url")
-    String storeUrl();
 
-    @Key("game.url")
-    String gameUrl();
 
     @Key("retryCount")
     int retryCount();
 
     @Key("android.deviceName")
+    @DefaultValue("")
     String androidDeviceName();
 
     @Key("android.udid")
+    @DefaultValue("")
     String androidUdid();
 
     @Key("android.platformVersion")
+    @DefaultValue("")
     String androidPlatformVersion();
 
     @Key("appium.serverUrl")
