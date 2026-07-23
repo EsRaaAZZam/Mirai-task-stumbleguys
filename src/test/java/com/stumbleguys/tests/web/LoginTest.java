@@ -7,6 +7,7 @@ import com.stumbleguys.tests.BaseTest;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
@@ -34,12 +35,15 @@ public class LoginTest extends BaseTest {
     @BeforeMethod(alwaysRun = true)
     public void resetToHome() {
         try {
-            for (String handle : DriverManager.getDriver().getWindowHandles()) {
-                if (!handle.equals(mainWindowHandle)) {
-                    DriverManager.getDriver().switchTo().window(handle).close();
-                }
+            String currentUrl = (String) ((JavascriptExecutor) DriverManager.getDriver()).executeScript(
+                    "document.dispatchEvent(new KeyboardEvent('keydown', {key:'Escape', bubbles:true}));" +
+                    "return window.location.href;"
+            );
+            if (currentUrl == null || !currentUrl.startsWith(configuration().url()) || currentUrl.contains("facebook.com")) {
+                DriverManager.getDriver().manage().deleteAllCookies();
+                DriverManager.getDriver().get(configuration().url());
+                landingPage.acceptCookiesIfPresent();
             }
-            DriverManager.getDriver().switchTo().window(mainWindowHandle);
         } catch (Exception e) {
             DriverManager.quit();
             WebDriver driver = new TargetFactory().createInstance("chrome");
@@ -50,9 +54,6 @@ public class LoginTest extends BaseTest {
             mainWindowHandle = DriverManager.getDriver().getWindowHandle();
             initPages();
         }
-        DriverManager.getDriver().manage().deleteAllCookies();
-        DriverManager.getDriver().get(configuration().url());
-        landingPage.acceptCookiesIfPresent();
     }
 
     @Test(retryAnalyzer = RetryAnalyzer.class)
@@ -98,5 +99,27 @@ public class LoginTest extends BaseTest {
                 "Login modal must be open before checking the Facebook button.");
         softAssert.assertTrue(loginPage.isFacebookLoginButtonVisible(),
                 "Continue with Facebook button must be visible in the login modal.");
+    }
+
+    @Test(retryAnalyzer = RetryAnalyzer.class)
+    @Description("Verify clicking Continue with Facebook opens the Facebook OAuth popup")
+    @Story("Facebook login")
+    public void testFacebookLoginOpensOAuthPopup() {
+        landingPage.clickSignIn();
+        loginPage.clickFacebookLogin();
+        softAssert.assertTrue(loginPage.isFacebookPopupOpen(mainWindowHandle),
+                "Facebook OAuth popup should open in a new window after clicking Continue with Facebook.");
+        softAssert.assertAll();
+    }
+
+    @Test(retryAnalyzer = RetryAnalyzer.class)
+    @Description("Verify clicking Continue with email opens the email login form")
+    @Story("Email login")
+    public void testEmailLoginOpensEmailForm() {
+        landingPage.clickSignIn();
+        loginPage.clickEmailLogin();
+        softAssert.assertTrue(loginPage.isEmailInputVisible(),
+                "Email input field should appear after clicking Continue with email.");
+        softAssert.assertAll();
     }
 }

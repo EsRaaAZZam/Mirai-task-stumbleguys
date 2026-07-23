@@ -2,6 +2,8 @@ package com.stumbleguys.tests.mobile;
 
 import com.stumbleguys.listeners.RetryAnalyzer;
 import io.qameta.allure.Description;
+
+import static com.stumbleguys.config.ConfigurationManager.configuration;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
 import org.testng.annotations.BeforeClass;
@@ -46,6 +48,31 @@ public class MobileLoginTest extends MobileBaseTest {
         softAssert.assertTrue(
                 loginPage.isFacebookLoginButtonVisible() || loginPage.isEmailLoginButtonVisible(),
                 "Facebook or email login option must be visible on the mobile login modal.");
+        softAssert.assertAll();
+    }
+
+    @Test(retryAnalyzer = RetryAnalyzer.class, dependsOnMethods = "testMobileLoginOptionsDisplayed")
+    @Description("Verify clicking Continue with Facebook navigates to Facebook OAuth on mobile")
+    @Story("Mobile Facebook login")
+    public void testMobileFacebookLoginNavigatesOAuth() {
+        navigateTo(configuration().url());
+        landingPage.clickSignIn();
+        loginPage.clickFacebookLogin();
+        softAssert.assertTrue(loginPage.isFacebookUrlReached(),
+                "Browser should navigate to Facebook OAuth page after clicking Continue with Facebook on mobile.");
+        navigateTo(configuration().url());
+        softAssert.assertAll();
+    }
+
+    @Test(retryAnalyzer = RetryAnalyzer.class, dependsOnMethods = "testMobileLoginOptionsDisplayed")
+    @Description("Verify clicking Continue with email opens the email login form on mobile")
+    @Story("Mobile email login")
+    public void testMobileEmailLoginOpensEmailForm() {
+        navigateTo(configuration().url());
+        landingPage.clickSignIn();
+        loginPage.clickEmailLogin();
+        softAssert.assertTrue(loginPage.isEmailInputVisible(),
+                "Email input field should appear after clicking Continue with email on mobile.");
         softAssert.assertAll();
     }
 }

@@ -30,7 +30,13 @@ public enum BrowserFactory {
             options.addArguments("--ignore-certificate-errors");
             options.addArguments("--no-sandbox");
             options.addArguments("--disable-dev-shm-usage");
-            options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
+            options.addArguments("--disable-background-networking");
+            options.addArguments("--disable-extensions");
+            options.addArguments("--disable-default-apps");
+            options.addArguments("--disable-background-timer-throttling");
+            options.addArguments("--disable-backgrounding-occluded-windows");
+            options.addArguments("--disable-renderer-backgrounding");
+            options.setPageLoadStrategy(PageLoadStrategy.EAGER);
             if (Boolean.TRUE.equals(configuration().headless())) {
                 options.addArguments("--headless=new");
                 options.addArguments("--window-size=1920,1080");

@@ -19,7 +19,7 @@ public class LandingPage {
 
     @Step("Accept cookie consent if present")
     public void acceptCookiesIfPresent() {
-        if (element.isVisible(cookieAcceptBtn, 3)) {
+        if (element.isVisible(cookieAcceptBtn,3 )) {
             element.click(cookieAcceptBtn);
             return;
         }
@@ -59,14 +59,16 @@ public class LandingPage {
     }
 
     private void clickVisibleAvatarButton() {
-        ((JavascriptExecutor) DriverManager.getDriver()).executeScript(
-            "var btns = document.querySelectorAll('button');" +
-            "for (var i = 0; i < btns.length; i++) {" +
-            "  if (!btns[i].querySelector('img[alt=\"avatar\"]')) continue;" +
-            "  var r = btns[i].getBoundingClientRect();" +
-            "  if (r.width > 0 && r.height > 0) { btns[i].click(); return; }" +
-            "}"
-        );
+        new WebDriverWait(DriverManager.getDriver(), Duration.ofSeconds(10))
+            .until(d -> Boolean.TRUE.equals(((JavascriptExecutor) d).executeScript(
+                "var btns = document.querySelectorAll('button');" +
+                "for (var i = 0; i < btns.length; i++) {" +
+                "  if (!btns[i].querySelector('img[alt=\"avatar\"]')) continue;" +
+                "  var r = btns[i].getBoundingClientRect();" +
+                "  if (r.width > 0 && r.height > 0) { btns[i].click(); return true; }" +
+                "}" +
+                "return false;"
+            )));
     }
 
     @Step("Click Login button")

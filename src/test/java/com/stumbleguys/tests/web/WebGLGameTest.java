@@ -1,20 +1,15 @@
 package com.stumbleguys.tests.web;
 
 import com.stumbleguys.driver.DriverManager;
-import com.stumbleguys.driver.TargetFactory;
 import com.stumbleguys.listeners.RetryAnalyzer;
 import com.stumbleguys.tests.BaseTest;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
-import org.openqa.selenium.WebDriver;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
-
-import java.time.Duration;
 
 import static com.stumbleguys.config.ConfigurationManager.configuration;
 
@@ -29,21 +24,6 @@ public class WebGLGameTest extends BaseTest {
     public void setUp(@Optional("chrome") String browser) {
         super.setUp(browser);
         landingPage.acceptCookiesIfPresent();
-    }
-
-    @BeforeMethod(alwaysRun = true)
-    public void ensureBrowserAlive() {
-        try {
-            DriverManager.getDriver().getCurrentUrl();
-        } catch (Exception e) {
-            DriverManager.quit();
-            WebDriver driver = new TargetFactory().createInstance("chrome");
-            DriverManager.setDriver(driver);
-            DriverManager.getDriver().manage().window().maximize();
-            DriverManager.getDriver().manage().timeouts()
-                    .implicitlyWait(Duration.ofSeconds(configuration().timeout()));
-            initPages();
-        }
     }
 
     @Test(retryAnalyzer = RetryAnalyzer.class)

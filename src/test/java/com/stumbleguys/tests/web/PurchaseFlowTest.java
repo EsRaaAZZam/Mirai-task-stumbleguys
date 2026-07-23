@@ -19,7 +19,8 @@ public class PurchaseFlowTest extends BaseTest {
     @BeforeClass(alwaysRun = true)
     @Parameters("browser")
     @Override
-    public void setUp(@Optional("chrome") String browser) {
+    public void
+    setUp(@Optional("chrome") String browser) {
         super.setUp(browser);
         landingPage.acceptCookiesIfPresent();
     }
