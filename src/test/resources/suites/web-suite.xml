@@ -1,0 +1,30 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Stumble Guys - Desktop Web Suite" verbose="2" parallel="false">
+
+    <listeners>
+        <listener class-name="com.stumbleguys.listeners.SuiteListener"/>
+    </listeners>
+
+
+    <test name="Login Tests - Chrome" preserve-order="true">
+        <parameter name="browser" value="chrome"/>
+        <classes>
+            <class name="com.stumbleguys.tests.web.LoginTest"/>
+        </classes>
+    </test>
+
+    <test name="Purchase Flow Tests - Chrome" preserve-order="true">
+        <parameter name="browser" value="chrome"/>
+        <classes>
+            <class name="com.stumbleguys.tests.web.PurchaseFlowTest"/>
+        </classes>
+    </test>
+
+    <test name="WebGL Game Tests - Chrome" preserve-order="true">
+        <parameter name="browser" value="chrome"/>
+        <classes>
+            <class name="com.stumbleguys.tests.web.WebGLGameTest"/>
+        </classes>
+    </test>
+
+</suite>

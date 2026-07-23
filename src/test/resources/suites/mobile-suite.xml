@@ -1,0 +1,16 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Stumble Guys - Android Chrome Mobile Suite" verbose="2" parallel="false">
+
+    <test name="Mobile Login Tests" preserve-order="true">
+        <classes>
+            <class name="com.stumbleguys.tests.mobile.MobileLoginTest"/>
+        </classes>
+    </test>
+
+    <test name="Mobile Purchase Flow Tests" preserve-order="true">
+        <classes>
+            <class name="com.stumbleguys.tests.mobile.MobilePurchaseFlowTest"/>
+        </classes>
+    </test>
+
+</suite>
